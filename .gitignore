@@ -1,6 +1,11 @@
 # Ignore vendor
 /vendor/
 
+# Jekyll
+/_site/
+/.jekyll-cache/
+/.jekyll-metadata
+
 # Tooling
 /phpcompat-tools/
 /build/

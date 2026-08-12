@@ -26,6 +26,14 @@ phpunit/
 /build/
 vendor/
 docs/
+_layouts/
+_includes/
+/site-assets/
+/_site/
+Gemfile
+Gemfile.lock
+favicon.ico
+/index.md
 *.dist
 *.neon
 composer.json
