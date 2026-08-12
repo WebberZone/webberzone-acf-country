@@ -8,7 +8,7 @@
 _Requires:_ WordPress 6.6, PHP 7.4, Advanced Custom Fields (or ACF PRO)
 _Tested up to:_ PHP 8.5
 _License:_ [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.html)
-_Plugin page:_ [WebberZone ACF Country](https://webberzone.com/plugins/webberzone-acf-country/)
+_Plugin page:_ [WebberZone ACF Country](https://webberzone.github.io/webberzone-acf-country/)
 
 ---
 

@@ -12,7 +12,7 @@
  *
  * @wordpress-plugin
  * Plugin Name: WebberZone ACF Country
- * Plugin URI:  https://webberzone.com/plugins/webberzone-acf-country/
+ * Plugin URI:  https://webberzone.github.io/webberzone-acf-country/
  * Description: Adds a 'Country' field type for Advanced Custom Fields.
  * Version:     1.0.0
  * Author:      WebberZone
