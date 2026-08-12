@@ -30,6 +30,7 @@ _layouts/
 _includes/
 /site-assets/
 /_site/
+_config.yml
 Gemfile
 Gemfile.lock
 favicon.ico
