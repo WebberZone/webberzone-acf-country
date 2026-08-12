@@ -1,0 +1,12 @@
+# Ignore vendor
+/vendor/
+
+# Tooling
+/phpcompat-tools/
+/build/
+
+# Lock files
+composer.lock
+
+# Claude AI
+.claude/
