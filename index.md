@@ -35,7 +35,7 @@ permalink: /
     </div>
   </div>
 
-  <img class="screenshot" src="{{ '/site-assets/img/screenshot-country-field.png' | relative_url }}" alt="The Country field as it appears on an ACF-powered edit screen, showing a searchable select with Canada chosen" width="1250" height="95">
+  <img class="screenshot" src="{{ '/site-assets/img/screenshot-country-field.png' | relative_url }}" alt="The Country field as it appears on an ACF-powered edit screen: Canada selected, with the searchable dropdown open over the rest of the country list" width="665" height="338">
 </div>
 
 <div class="home-section" style="padding-top:0;">

@@ -173,8 +173,9 @@ a:focus-visible, button:focus-visible {
 .screenshot {
   display: block;
   width: 100%;
+  max-width: 640px;
   height: auto;
-  margin-top: 24px;
+  margin: 24px auto 0;
   border: 1px solid var(--wz-card-border);
   border-radius: var(--r);
   box-shadow: 0 1px 4px var(--wz-card-shadow);
