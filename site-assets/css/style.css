@@ -170,6 +170,16 @@ a:focus-visible, button:focus-visible {
 .feature-card h3 { font-size: .95rem; margin: 0 0 8px; }
 .feature-card p { color: var(--wz-warm-grey); font-size: .85rem; margin: 0; line-height: 1.6; }
 
+.screenshot {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 24px;
+  border: 1px solid var(--wz-card-border);
+  border-radius: var(--r);
+  box-shadow: 0 1px 4px var(--wz-card-shadow);
+}
+
 .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; counter-reset: step; }
 .step { position: relative; padding-left: 44px; }
 .step::before {
