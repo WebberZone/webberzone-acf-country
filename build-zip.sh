@@ -22,6 +22,7 @@ rsync -av --exclude-from=- . "$TEMP_DIR/" <<EOF
 .github/
 node_modules/
 phpcompat-tools/
+phpunit/
 /build/
 vendor/
 docs/
