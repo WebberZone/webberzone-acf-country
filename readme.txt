@@ -4,7 +4,7 @@ Tags: acf, advanced custom fields, country, field type
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,5 +42,16 @@ add_filter( 'wzacf_countries', function( $countries ) {
 
 == Changelog ==
 
+= 1.0.1 =
+
+Release date: 8 October 2026
+
+**Changed**
+
+* Tested with WordPress 7.1.
+
 = 1.0.0 =
+
+Release date: 12 August 2026
+
 * Initial release.

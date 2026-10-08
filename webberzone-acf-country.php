@@ -14,7 +14,7 @@
  * Plugin Name: WebberZone ACF Country
  * Plugin URI:  https://webberzone.github.io/webberzone-acf-country/
  * Description: Adds a 'Country' field type for Advanced Custom Fields.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -39,7 +39,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 1.0.0
  */
 if ( ! defined( 'WZACF_VERSION' ) ) {
-	define( 'WZACF_VERSION', '1.0.0' );
+	define( 'WZACF_VERSION', '1.0.1' );
 }
 
 /**
