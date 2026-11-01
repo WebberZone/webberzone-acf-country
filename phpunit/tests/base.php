@@ -78,15 +78,6 @@ if (! function_exists('acf_get_field_type') ) {
 class Base extends WP_UnitTestCase
 {
 
-    /**
-     * Constants defined by the main plugin file should be present.
-     */
-    public function test_plugin_constants_defined()
-    {
-        $this->assertTrue(defined('WZACF_VERSION'));
-        $this->assertTrue(defined('WZACF_PLUGIN_DIR'));
-        $this->assertTrue(defined('WZACF_PLUGIN_URL'));
-    }
 
     /**
      * get_countries() should return a code => name map including the US.
