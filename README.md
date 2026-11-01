@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-GPL_v2%2B-orange.svg?style=flat-square)](https://opensource.org/licenses/GPL-2.0)
 [![Coding Standards](https://img.shields.io/github/actions/workflow/status/WebberZone/webberzone-acf-country/cs.yml?branch=master&label=coding%20standards&style=flat-square)](https://github.com/WebberZone/webberzone-acf-country/actions/workflows/cs.yml)
-[![Unit Tests](https://img.shields.io/github/actions/workflow/status/WebberZone/webberzone-acf-country/unit-tests.yml?branch=master&label=unit%20tests&style=flat-square)](https://github.com/WebberZone/webberzone-acf-country/actions/workflows/unit-tests.yml)
+[![Unit Tests](https://img.shields.io/github/actions/workflow/status/WebberZone/webberzone-acf-country/phpunit.yml?branch=master&label=phpunit&style=flat-square)](https://github.com/WebberZone/webberzone-acf-country/actions/workflows/phpunit.yml)
 [![PHP Compatibility](https://img.shields.io/github/actions/workflow/status/WebberZone/webberzone-acf-country/phpcompat.yml?branch=master&label=php%207.4-8.6&style=flat-square)](https://github.com/WebberZone/webberzone-acf-country/actions/workflows/phpcompat.yml)
 
 _Requires:_ WordPress 6.6, PHP 7.4, Advanced Custom Fields (or ACF PRO)
