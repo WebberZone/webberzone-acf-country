@@ -220,11 +220,11 @@ class Country_Field extends \acf_field {
 
 			if ( count( $invalid ) !== 0 ) {
 				/* translators: %s: comma-separated list of invalid country codes. */
-				$valid = sprintf( _n( '%s is not a valid country code', '%s are not valid country codes', count( $invalid ), 'webberzone-acf-country' ), implode( ', ', $invalid ) );
+				$valid = sprintf( _n( '%s is not a valid country code', '%s are not valid country codes', count( $invalid ), 'webberzone-acf-country' ), esc_html( implode( ', ', array_map( 'strval', $invalid ) ) ) );
 			}
 		} elseif ( is_string( $value ) && ! in_array( $value, $countries, true ) ) {
 			/* translators: %s: invalid country code. */
-			$valid = sprintf( __( '%s is not a valid country code', 'webberzone-acf-country' ), $value );
+			$valid = sprintf( __( '%s is not a valid country code', 'webberzone-acf-country' ), esc_html( $value ) );
 		}
 
 		return $valid;
