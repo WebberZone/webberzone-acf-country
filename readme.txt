@@ -44,7 +44,7 @@ add_filter( 'wzacf_countries', function( $countries ) {
 
 = 1.0.2 =
 
-Release date: 2 November 2026
+Release date: 3 November 2026
 
 **Security**
 
