@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-labelledby="title">
+  <title id="title">WebberZone ACF Country</title>
+  <rect width="128" height="128" rx="28" fill="#1a2e3a"/>
+  <g transform="translate(26 20) scale(3.4)" fill="#ffbd59">
+    <path d="M6 21V4h13l-2.5 5L19 14H7.5v7H6z"/>
+  </g>
+</svg>

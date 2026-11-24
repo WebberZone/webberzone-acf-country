@@ -15,7 +15,8 @@
         }
     ],
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "yahnis-elsts/plugin-update-checker": "^6.0"
     },
     "require-dev": {
         "szepeviktor/phpstan-wordpress": "^2",
@@ -37,6 +38,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
+        "build:vendor": "composer install --no-dev --optimize-autoloader --classmap-authoritative",
         "phpstan": "vendor/bin/phpstan analyse --memory-limit=2048M",
         "phpunit": "vendor/bin/phpunit --configuration phpunit.xml.dist",
         "phpstan-baseline": "vendor/bin/phpstan analyse --memory-limit=2048M --generate-baseline",
@@ -58,6 +60,9 @@
             "@phpcompat",
             "@phpstan"
         ],
-        "zip": "./build-zip.sh"
+        "zip": [
+            "@build:vendor",
+            "./build-zip.sh"
+        ]
     }
 }

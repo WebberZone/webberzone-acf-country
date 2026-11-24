@@ -5,6 +5,7 @@ permalink: /
 ---
 
 <div class="hero">
+  <img src="{{ '/assets/icon.svg' | relative_url }}" alt="" width="72" height="72" class="hero-icon">
   <div class="eyebrow">Free &middot; Open Source &middot; No Account</div>
   <h1>A <em>Country</em> field for ACF that just works</h1>
   <p class="lead">WebberZone ACF Country adds a proper <code>Country</code> field type to Advanced Custom Fields: a select of every ISO 3166-1 country, in English, with the same options and saved-value structure as a standard ACF select field.</p>

@@ -14,7 +14,7 @@
  * Plugin Name: WebberZone ACF Country
  * Plugin URI:  https://webberzone.github.io/webberzone-acf-country/
  * Description: Adds a 'Country' field type for Advanced Custom Fields.
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      WebberZone
  * Author URI:  https://webberzone.com
  * License:     GPL-2.0+
@@ -24,6 +24,7 @@
  * Requires PHP: 7.4
  * Requires at least: 6.6
  * GitHub Plugin URI: https://github.com/WebberZone/webberzone-acf-country/
+ * Update URI:        https://github.com/WebberZone/webberzone-acf-country
  */
 
 namespace WebberZone\ACF_Country;
@@ -39,7 +40,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 1.0.0
  */
 if ( ! defined( 'WZACF_VERSION' ) ) {
-	define( 'WZACF_VERSION', '1.0.2' );
+	define( 'WZACF_VERSION', '1.0.3' );
 }
 
 /**
@@ -67,6 +68,38 @@ if ( ! defined( 'WZACF_PLUGIN_URL' ) ) {
  */
 if ( ! defined( 'WZACF_PLUGIN_FILE' ) ) {
 	define( 'WZACF_PLUGIN_FILE', __FILE__ );
+}
+
+/**
+ * Slug used for GitHub update checks.
+ *
+ * @since 1.0.3
+ */
+if ( ! defined( 'WZACF_MODULE' ) ) {
+	define( 'WZACF_MODULE', 'webberzone-acf-country' );
+}
+
+if ( apply_filters( 'wzacf_enable_update_checks', true ) && is_readable( WZACF_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+	require_once WZACF_PLUGIN_DIR . 'vendor/autoload.php';
+
+	$update_checker = \YahnisElsts\PluginUpdateChecker\v6\PucFactory::buildUpdateChecker(
+		'https://github.com/WebberZone/webberzone-acf-country',
+		WZACF_PLUGIN_FILE,
+		WZACF_MODULE
+	);
+	$github_api     = $update_checker->getVcsApi();
+	if ( method_exists( $github_api, 'enableReleaseAssets' ) ) {
+		$github_api->enableReleaseAssets(
+			'/^webberzone-acf-country\.zip$/',
+			$github_api::REQUIRE_RELEASE_ASSETS
+		);
+	}
+	add_filter(
+		'puc_vcs_update_detection_strategies-' . WZACF_MODULE,
+		static function ( $strategies ) {
+			return array_intersect_key( $strategies, array( 'latest_release' => true ) );
+		}
+	);
 }
 
 /**

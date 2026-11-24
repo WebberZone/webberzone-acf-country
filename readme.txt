@@ -4,7 +4,7 @@ Tags: acf, advanced custom fields, country, field type
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,11 +36,19 @@ add_filter( 'wzacf_countries', function( $countries ) {
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/webberzone-acf-country`, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Add a field of type "Country" to any ACF field group.
+1. Download `webberzone-acf-country.zip` from [GitHub Releases](https://github.com/WebberZone/webberzone-acf-country/releases), upload it under Plugins → Add New → Upload Plugin, and activate it. Published releases also appear as updates on the Plugins screen.
+2. Add a field of type "Country" to any ACF field group.
 
 == Changelog ==
+
+= 1.0.3 =
+
+Release date: 24 November 2026
+
+**Added**
+
+* Plugins screen updates from GitHub releases.
+* Plugin icon for WordPress update details and the project site.
 
 = 1.0.2 =
 
@@ -63,3 +71,8 @@ Release date: 8 October 2026
 Release date: 12 August 2026
 
 * Initial release.
+
+== Upgrade Notice ==
+
+= 1.0.3 =
+Adds Plugins screen updates from GitHub releases. No action required on existing sites.
