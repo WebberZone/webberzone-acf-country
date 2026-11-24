@@ -33,9 +33,6 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v4
-
       - name: Create artifact
         run: composer zip
       - name: Upload to release
