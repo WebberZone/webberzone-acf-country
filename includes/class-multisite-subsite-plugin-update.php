@@ -33,6 +33,7 @@ class Multisite_Subsite_Plugin_Update {
 		}
 
 		add_action( 'load-plugins.php', array( self::class, 'maybe_register_row' ), 25 );
+		add_filter( 'plugin_row_meta', array( self::class, 'fix_plugin_row_details_link' ), 100, 2 );
 	}
 
 	/**
@@ -79,21 +80,11 @@ class Multisite_Subsite_Plugin_Update {
 		$plugin_name = esc_html( $plugin_data['Name'] );
 		$plugin_slug = $response->slug ?? $response->id;
 
-		if ( isset( $response->slug ) ) {
-			$details_url = self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . $plugin_slug . '&section=changelog' );
-		} elseif ( isset( $response->url ) ) {
-			$details_url = $response->url;
-		} else {
-			$details_url = $plugin_data['PluginURI'];
-		}
-
-		$details_url = add_query_arg(
-			array(
-				'TB_iframe' => 'true',
-				'width'     => 600,
-				'height'    => 800,
-			),
-			$details_url
+		list( $details_url, $details_link_attrs ) = self::get_version_details_link(
+			$response,
+			$plugin_data,
+			$plugin_slug,
+			$plugin_name
 		);
 
 		/** @var \WP_Plugins_List_Table $wp_list_table */
@@ -127,17 +118,7 @@ class Multisite_Subsite_Plugin_Update {
 				__( 'There is a new version of %1$s available. <a href="%2$s" %3$s>View version %4$s details</a>. <em>Automatic update is unavailable for this plugin.</em>', 'webberzone-acf-country' ),
 				$plugin_name,
 				esc_url( $details_url ),
-				sprintf(
-					'class="thickbox open-plugin-details-modal" aria-label="%s"',
-					esc_attr(
-						sprintf(
-							/* translators: 1: Plugin name, 2: Version number. */
-							__( 'View %1$s version %2$s details', 'webberzone-acf-country' ),
-							$plugin_name,
-							$response->new_version
-						)
-					)
-				),
+				$details_link_attrs,
 				esc_attr( $response->new_version )
 			);
 		} elseif ( $compatible_php ) {
@@ -146,17 +127,7 @@ class Multisite_Subsite_Plugin_Update {
 				__( 'There is a new version of %1$s available. <a href="%2$s" %3$s>View version %4$s details</a> or <a href="%5$s" %6$s>update now</a>.', 'webberzone-acf-country' ),
 				$plugin_name,
 				esc_url( $details_url ),
-				sprintf(
-					'class="thickbox open-plugin-details-modal" aria-label="%s"',
-					esc_attr(
-						sprintf(
-							/* translators: 1: Plugin name, 2: Version number. */
-							__( 'View %1$s version %2$s details', 'webberzone-acf-country' ),
-							$plugin_name,
-							$response->new_version
-						)
-					)
-				),
+				$details_link_attrs,
 				esc_attr( $response->new_version ),
 				esc_url(
 					wp_nonce_url(
@@ -181,17 +152,7 @@ class Multisite_Subsite_Plugin_Update {
 				__( 'There is a new version of %1$s available, but it does not work with your version of PHP. <a href="%2$s" %3$s>View version %4$s details</a> or <a href="%5$s">learn more about updating PHP</a>.', 'webberzone-acf-country' ),
 				$plugin_name,
 				esc_url( $details_url ),
-				sprintf(
-					'class="thickbox open-plugin-details-modal" aria-label="%s"',
-					esc_attr(
-						sprintf(
-							/* translators: 1: Plugin name, 2: Version number. */
-							__( 'View %1$s version %2$s details', 'webberzone-acf-country' ),
-							$plugin_name,
-							$response->new_version
-						)
-					)
-				),
+				$details_link_attrs,
 				esc_attr( $response->new_version ),
 				esc_url( wp_get_update_php_url() )
 			);
@@ -210,5 +171,126 @@ class Multisite_Subsite_Plugin_Update {
 		do_action( "in_plugin_update_message-{$file}", $plugin_data, $response );
 
 		echo '</p></div></td></tr>';
+	}
+
+	/**
+	 * Replace PUC's thickbox "View details" link on subsite (plugin-install modal breaks on multisite).
+	 *
+	 * @since 1.0.3
+	 *
+	 * @param string[] $plugin_meta Meta links.
+	 * @param string   $plugin_file Plugin basename.
+	 * @return string[]
+	 */
+	public static function fix_plugin_row_details_link( $plugin_meta, $plugin_file ) {
+		if ( plugin_basename( WZACF_PLUGIN_FILE ) !== $plugin_file || is_network_admin() ) {
+			return $plugin_meta;
+		}
+
+		$url = self::get_github_release_url( WZACF_VERSION );
+		if ( '' === $url ) {
+			return $plugin_meta;
+		}
+
+		foreach ( $plugin_meta as $index => $link ) {
+			if ( str_contains( $link, 'open-plugin-details-modal' ) ) {
+				$plugin_meta[ $index ] = sprintf(
+					'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+					esc_url( $url ),
+					esc_html__( 'View details', 'webberzone-acf-country' )
+				);
+			}
+		}
+
+		return $plugin_meta;
+	}
+
+	/**
+	 * Version details link for the update row.
+	 *
+	 * @since 1.0.3
+	 *
+	 * @param object $response    Update metadata.
+	 * @param array  $plugin_data Plugin header data.
+	 * @param string $plugin_slug Update slug.
+	 * @param string $plugin_name Escaped plugin name.
+	 * @return array{0: string, 1: string} URL and extra anchor attributes.
+	 */
+	private static function get_version_details_link( $response, $plugin_data, $plugin_slug, $plugin_name ) {
+		$new_version = $response->new_version ?? '';
+		$github_url  = self::get_github_release_url( $new_version );
+		$aria_label  = esc_attr(
+			sprintf(
+				/* translators: 1: Plugin name, 2: Version number. */
+				__( 'View %1$s version %2$s details', 'webberzone-acf-country' ),
+				$plugin_name,
+				$new_version
+			)
+		);
+
+		if ( '' !== $github_url ) {
+			return array(
+				$github_url,
+				sprintf(
+					'target="_blank" rel="noopener noreferrer" aria-label="%s"',
+					$aria_label
+				),
+			);
+		}
+
+		if ( isset( $response->slug ) ) {
+			$details_url = self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . $plugin_slug . '&section=changelog' );
+		} elseif ( isset( $response->url ) ) {
+			$details_url = $response->url;
+		} else {
+			$details_url = $plugin_data['PluginURI'];
+		}
+
+		$details_url = add_query_arg(
+			array(
+				'TB_iframe' => 'true',
+				'width'     => 600,
+				'height'    => 800,
+			),
+			$details_url
+		);
+
+		return array(
+			$details_url,
+			sprintf(
+				'class="thickbox open-plugin-details-modal" aria-label="%s"',
+				$aria_label
+			),
+		);
+	}
+
+	/**
+	 * GitHub release URL for a version (multisite subsite cannot use the core thickbox modal).
+	 *
+	 * @since 1.0.3
+	 *
+	 * @param string $version Plugin version.
+	 * @return string Empty string when not a GitHub release.
+	 */
+	private static function get_github_release_url( $version ) {
+		if ( '' === $version ) {
+			return '';
+		}
+
+		$tag = str_starts_with( $version, 'v' ) ? $version : 'v' . $version;
+
+		/**
+		 * Filters the GitHub releases URL used for version details on multisite subsites.
+		 *
+		 * @since 1.0.3
+		 *
+		 * @param string $url     Default release URL.
+		 * @param string $version Version string used for the tag.
+		 */
+		return apply_filters(
+			'wzacf_github_release_url',
+			'https://github.com/WebberZone/webberzone-acf-country/releases/tag/' . rawurlencode( $tag ),
+			$version
+		);
 	}
 }

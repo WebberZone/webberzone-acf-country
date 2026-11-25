@@ -51,6 +51,10 @@ Release date: 24 November 2026
 * Plugin icon for WordPress update details and the project site.
 * Multisite subsite Plugins screen update row when the plugin is active only on a site.
 
+**Fixed**
+
+* Version details links on multisite subsite Plugins screens (GitHub release instead of broken thickbox).
+
 = 1.0.2 =
 
 Release date: 3 November 2026
