@@ -100,6 +100,9 @@ if ( apply_filters( 'wzacf_enable_update_checks', true ) && is_readable( WZACF_P
 			return array_intersect_key( $strategies, array( 'latest_release' => true ) );
 		}
 	);
+
+	require_once WZACF_PLUGIN_DIR . 'includes/class-multisite-subsite-plugin-update.php';
+	Multisite_Subsite_Plugin_Update::init();
 }
 
 /**
