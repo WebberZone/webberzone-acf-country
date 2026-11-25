@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 1.0.4 =
+
+Release date: 25 November 2026
+
+**Fixed**
+
+* PHP 7.4 compatibility in the multisite subsite update UI.
+* Coding standards compliance for the multisite subsite update row.
+
 = 1.0.3 =
 
 Release date: 24 November 2026
@@ -8,6 +17,11 @@ Release date: 24 November 2026
 
 * Plugins screen updates from GitHub releases.
 * Plugin icon for WordPress update details and the project site.
+* Multisite subsite Plugins screen update row when the plugin is active only on a site.
+
+**Fixed**
+
+* Version details links on multisite subsite Plugins screens (GitHub release instead of broken thickbox).
 
 = 1.0.2 =
 

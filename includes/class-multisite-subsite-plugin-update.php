@@ -87,11 +87,11 @@ class Multisite_Subsite_Plugin_Update {
 			$plugin_name
 		);
 
-		/** @var \WP_Plugins_List_Table $wp_list_table */
+		$screen        = get_current_screen();
 		$wp_list_table = _get_list_table(
 			'WP_Plugins_List_Table',
 			array(
-				'screen' => get_current_screen(),
+				'screen' => $screen ? $screen->id : 'plugins',
 			)
 		);
 
@@ -104,57 +104,65 @@ class Multisite_Subsite_Plugin_Update {
 			'<tr class="plugin-update-tr%s" id="%s" data-slug="%s" data-plugin="%s">' .
 			'<td colspan="%s" class="plugin-update colspanchange">' .
 			'<div class="update-message notice inline %s notice-alt"><p>',
-			$active_class,
+			esc_attr( $active_class ),
 			esc_attr( $plugin_slug . '-update' ),
 			esc_attr( $plugin_slug ),
 			esc_attr( $file ),
-			esc_attr( $wp_list_table->get_column_count() ),
+			esc_attr( (string) $wp_list_table->get_column_count() ),
 			esc_attr( $notice_type )
 		);
 
 		if ( empty( $response->package ) ) {
-			printf(
-				/* translators: 1: Plugin name, 2: Details URL, 3: Additional link attributes, 4: Version number. */
-				__( 'There is a new version of %1$s available. <a href="%2$s" %3$s>View version %4$s details</a>. <em>Automatic update is unavailable for this plugin.</em>', 'webberzone-acf-country' ),
-				$plugin_name,
-				esc_url( $details_url ),
-				$details_link_attrs,
-				esc_attr( $response->new_version )
+			echo wp_kses_post(
+				sprintf(
+					/* translators: 1: Plugin name, 2: Details URL, 3: Additional link attributes, 4: Version number. */
+					__( 'There is a new version of %1$s available. <a href="%2$s" %3$s>View version %4$s details</a>. <em>Automatic update is unavailable for this plugin.</em>', 'webberzone-acf-country' ),
+					$plugin_name,
+					esc_url( $details_url ),
+					wp_kses_post( $details_link_attrs ),
+					esc_html( $response->new_version )
+				)
 			);
 		} elseif ( $compatible_php ) {
-			printf(
-				/* translators: 1: Plugin name, 2: Details URL, 3: Additional link attributes, 4: Version number, 5: Update URL, 6: Additional link attributes. */
-				__( 'There is a new version of %1$s available. <a href="%2$s" %3$s>View version %4$s details</a> or <a href="%5$s" %6$s>update now</a>.', 'webberzone-acf-country' ),
-				$plugin_name,
-				esc_url( $details_url ),
-				$details_link_attrs,
-				esc_attr( $response->new_version ),
-				esc_url(
-					wp_nonce_url(
-						self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $file,
-						'upgrade-plugin_' . $file
-					)
-				),
+			echo wp_kses_post(
 				sprintf(
-					'class="update-link" aria-label="%s"',
-					esc_attr(
+					/* translators: 1: Plugin name, 2: Details URL, 3: Additional link attributes, 4: Version number, 5: Update URL, 6: Additional link attributes. */
+					__( 'There is a new version of %1$s available. <a href="%2$s" %3$s>View version %4$s details</a> or <a href="%5$s" %6$s>update now</a>.', 'webberzone-acf-country' ),
+					$plugin_name,
+					esc_url( $details_url ),
+					wp_kses_post( $details_link_attrs ),
+					esc_html( $response->new_version ),
+					esc_url(
+						wp_nonce_url(
+							self_admin_url( 'update.php?action=upgrade-plugin&plugin=' ) . $file,
+							'upgrade-plugin_' . $file
+						)
+					),
+					wp_kses_post(
 						sprintf(
-							/* translators: %s: Plugin name. */
-							_x( 'Update %s now', 'plugin', 'webberzone-acf-country' ),
-							$plugin_name
+							'class="update-link" aria-label="%s"',
+							esc_attr(
+								sprintf(
+									/* translators: %s: Plugin name. */
+									_x( 'Update %s now', 'plugin', 'webberzone-acf-country' ),
+									$plugin_name
+								)
+							)
 						)
 					)
 				)
 			);
 		} else {
-			printf(
-				/* translators: 1: Plugin name, 2: Details URL, 3: Additional link attributes, 4: Version number 5: URL to Update PHP page. */
-				__( 'There is a new version of %1$s available, but it does not work with your version of PHP. <a href="%2$s" %3$s>View version %4$s details</a> or <a href="%5$s">learn more about updating PHP</a>.', 'webberzone-acf-country' ),
-				$plugin_name,
-				esc_url( $details_url ),
-				$details_link_attrs,
-				esc_attr( $response->new_version ),
-				esc_url( wp_get_update_php_url() )
+			echo wp_kses_post(
+				sprintf(
+					/* translators: 1: Plugin name, 2: Details URL, 3: Additional link attributes, 4: Version number 5: URL to Update PHP page. */
+					__( 'There is a new version of %1$s available, but it does not work with your version of PHP. <a href="%2$s" %3$s>View version %4$s details</a> or <a href="%5$s">learn more about updating PHP</a>.', 'webberzone-acf-country' ),
+					$plugin_name,
+					esc_url( $details_url ),
+					wp_kses_post( $details_link_attrs ),
+					esc_html( $response->new_version ),
+					esc_url( wp_get_update_php_url() )
+				)
 			);
 			wp_update_php_annotation( '<br><em>', '</em>' );
 		}
@@ -168,6 +176,7 @@ class Multisite_Subsite_Plugin_Update {
 		 * @param array  $plugin_data Plugin metadata.
 		 * @param object $response    Available update metadata.
 		 */
+		// phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores -- Core hook name uses a dash.
 		do_action( "in_plugin_update_message-{$file}", $plugin_data, $response );
 
 		echo '</p></div></td></tr>';
@@ -193,7 +202,7 @@ class Multisite_Subsite_Plugin_Update {
 		}
 
 		foreach ( $plugin_meta as $index => $link ) {
-			if ( str_contains( $link, 'open-plugin-details-modal' ) ) {
+			if ( false !== strpos( $link, 'open-plugin-details-modal' ) ) {
 				$plugin_meta[ $index ] = sprintf(
 					'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
 					esc_url( $url ),
@@ -277,7 +286,7 @@ class Multisite_Subsite_Plugin_Update {
 			return '';
 		}
 
-		$tag = str_starts_with( $version, 'v' ) ? $version : 'v' . $version;
+		$tag = ( 0 === strpos( $version, 'v' ) ) ? $version : 'v' . $version;
 
 		/**
 		 * Filters the GitHub releases URL used for version details on multisite subsites.

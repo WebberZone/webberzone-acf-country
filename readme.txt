@@ -4,7 +4,7 @@ Tags: acf, advanced custom fields, country, field type
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,15 @@ add_filter( 'wzacf_countries', function( $countries ) {
 2. Add a field of type "Country" to any ACF field group.
 
 == Changelog ==
+
+= 1.0.4 =
+
+Release date: 25 November 2026
+
+**Fixed**
+
+* PHP 7.4 compatibility in the multisite subsite update UI.
+* Coding standards compliance for the multisite subsite update row.
 
 = 1.0.3 =
 
@@ -79,5 +88,5 @@ Release date: 12 August 2026
 
 == Upgrade Notice ==
 
-= 1.0.3 =
-Adds Plugins screen updates from GitHub releases. No action required on existing sites.
+= 1.0.4 =
+Maintenance release fixing multisite update UI compatibility. No action required on existing sites.
