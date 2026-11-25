@@ -2,7 +2,7 @@
 # also create a release of the installable plugin.
 # Steps to execute:
 # - Checkout the source code
-# - Run "composer install" to download all dependencies under vendor/
+# - Run "composer zip" (build:vendor with --no-dev, then build-zip.sh)
 # - Create a .zip file, excluding:
 #   - All hidden files (.git, .gitignore, etc)
 #   - All development files, ending in .dist

@@ -2,6 +2,8 @@ name: PHPUnit
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*'
       - '[0-9]*'
@@ -42,7 +44,7 @@ jobs:
           --health-retries=10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -81,7 +83,7 @@ jobs:
           --health-retries=10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2

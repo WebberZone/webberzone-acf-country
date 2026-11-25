@@ -30,9 +30,13 @@
     },
     "config": {
         "autoloader-suffix": "WebberZoneAcfCountry",
+        "platform": {
+            "php": "7.4.33"
+        },
         "allow-plugins": {
             "phpstan/extension-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "php-http/discovery": false
         }
     },
     "minimum-stability": "dev",
