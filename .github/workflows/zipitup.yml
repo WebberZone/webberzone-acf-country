@@ -1,21 +1,15 @@
-# GitHub Action: whenever creating a new release of the source code,
-# also create a release of the installable plugin.
-# Steps to execute:
-# - Checkout the source code
-# - Run "composer zip" (build:vendor with --no-dev, then build-zip.sh)
-# - Create a .zip file, excluding:
-#   - All hidden files (.git, .gitignore, etc)
-#   - All development files, ending in .dist
-#   - All composer files <= after installing dependencies, no need for them anymore
-#   - Markdown files concerning development
-#   - Folder build/ <= created only to store the .zip file
-#   - Folder phpunit/ <= not needed for the plugin
-# - Upload the .zip file as an artifact to the action (this step is possibly optional)
-# - Upload the .zip file as a release, for download
+# Build the installable plugin zip and attach it when a release is published or on demand.
+# workflow_dispatch can re-upload the zip for an existing tag (e.g. after a failed Action).
 name: Generate Installable Plugin, and Upload as Release Asset
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to attach the installable zip to (e.g. v1.0.3)'
+        required: true
+        type: string
 permissions:
   contents: write
 jobs:
@@ -35,7 +29,36 @@ jobs:
 
       - name: Create artifact
         run: composer zip
+
       - name: Upload to release
-        uses: softprops/action-gh-release@v3
-        with:
-          files: build/${{ github.event.repository.name }}.zip
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TAG: ${{ github.event.inputs.tag }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          TAG="${INPUT_TAG:-${RELEASE_TAG:-}}"
+          ZIP="build/webberzone-acf-country.zip"
+          ASSET="webberzone-acf-country.zip"
+
+          if [ -z "$TAG" ]; then
+            echo "No release tag found." >&2
+            exit 1
+          fi
+
+          if [ ! -f "$ZIP" ]; then
+            echo "Missing $ZIP" >&2
+            exit 1
+          fi
+
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG does not exist on GitHub." >&2
+            exit 1
+          fi
+
+          if gh release view "$TAG" --json assets -q '.assets[].name' | grep -Fxq "$ASSET"; then
+            echo "$TAG already has $ASSET; uploading with --clobber to refresh."
+          fi
+
+          gh release upload "$TAG" "$ZIP" --clobber
+          echo "Uploaded $ASSET to $TAG."
